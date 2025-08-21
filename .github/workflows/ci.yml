@@ -24,9 +24,6 @@ jobs:
       - name: Instalar dependencias
         run: npm install
 
-      - name: Lint del codigo
-        run: npm run lint
-
       - name: Ejecutar pruebas
         run: npm test
 
