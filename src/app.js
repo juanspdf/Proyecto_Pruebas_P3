@@ -144,12 +144,14 @@ if (require.main === module) {
 }
 
 // === DEBUG (TEMPORAL) ===
+const Database = require('./config/database');
+
 app.get('/debug/env', (req, res) => {
   res.json({
-    hasMYSQLHOST: Boolean(process.env.MYSQLHOST),
-    hasMYSQLUSER: Boolean(process.env.MYSQLUSER),
-    hasMYSQLDATABASE: Boolean(process.env.MYSQLDATABASE),
-    hasMYSQLPORT: Boolean(process.env.MYSQLPORT),
+    hasMYSQLHOST: !!process.env.MYSQLHOST,
+    hasMYSQLUSER: !!process.env.MYSQLUSER,
+    hasMYSQLDATABASE: !!process.env.MYSQLDATABASE,
+    hasMYSQLPORT: !!process.env.MYSQLPORT,
     nodeEnv: process.env.NODE_ENV,
   });
 });
@@ -161,14 +163,12 @@ app.get('/debug/db', async (req, res) => {
     const rows = await db.query('SELECT 1 AS ok');
     res.json({ ok: true, rows });
   } catch (e) {
-    console.error('[DEBUG /debug/db]', e);
     res.status(500).json({
       ok: false,
       code: e.code,
       errno: e.errno,
       message: e.message,
       sqlMessage: e.sqlMessage,
-      stack: e.stack,
     });
   }
 });
