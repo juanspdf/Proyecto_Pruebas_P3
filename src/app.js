@@ -144,7 +144,6 @@ if (require.main === module) {
 }
 
 // === DEBUG (TEMPORAL) ===
-const Database = require('./config/database');
 
 app.get('/debug/env', (req, res) => {
   res.json({
