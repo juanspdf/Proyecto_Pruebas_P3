@@ -34,13 +34,13 @@ jobs:
         run: npm run k6:install
 
       - name: Ejecutar pruebas de k6 (usuario)
-        run: k6 run tests/k6/usuarios.performance.js
+        run: chmod +x tests/k6/usuarios.performance.js
 
       - name: Ejecutar pruebas de k6 (pedidos)
-        run: k6 run tests/k6/pedidos.performance.js
+        run: chmod +x tests/k6/pedidos.performance.js
 
       - name: Ejecutar pruebas de k6 (productos)
-        run: k6 run tests/k6/productos.performance.js
+        run: chmod +x tests/k6/productos.performance.js
 
       - name: Simular despliegue
         run: echo "Aqui toca poner el despliegue XD."
