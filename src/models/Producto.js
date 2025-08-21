@@ -17,20 +17,31 @@ class Producto {
     async obtenerTodos() {
         try {
             const pool = this.database.getPool();
+            if (!pool) {
+                console.error('No se pudo obtener el pool de la base de datos.');
+                throw new Error('No se pudo obtener el pool de la base de datos.');
+            }
             const query = `
                 SELECT id, nombre, descripcion, categoria, subcategoria, precio, stock 
                 FROM productos 
                 ORDER BY id
             `;
+            console.log('Ejecutando query para obtener productos:', query);
             const [rows] = await pool.execute(query);
+            console.log('Productos obtenidos de la base de datos:', rows);
 
             // Agregar imagen a cada producto
-            return rows.map(producto => ({
-                ...producto,
-                precio: parseFloat(producto.precio),
-                stock: parseInt(producto.stock),
-                imagen: this.obtenerRutaImagen(producto.id)
-            }));
+            const productosConImagen = rows.map(producto => {
+                const imagen = this.obtenerRutaImagen(producto.id);
+                console.log(`Producto ID ${producto.id} imagen:`, imagen);
+                return {
+                    ...producto,
+                    precio: parseFloat(producto.precio),
+                    stock: parseInt(producto.stock),
+                    imagen
+                };
+            });
+            return productosConImagen;
         } catch (error) {
             console.error('Error al obtener productos:', error);
             throw error;
